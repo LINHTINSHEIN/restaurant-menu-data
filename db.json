@@ -1,0 +1,10 @@
+{
+  "menu": {
+    "Appetizers": [
+      { "id": 1, "name": "မုန့်ဟင်းခါး", "price": 2000 }
+    ],
+    "Main Courses": [
+      { "id": 2, "name": "ကြက်သားဟင်း", "price": 5000 }
+    ]
+  }
+}
