@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Restaurant Menu Admin</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; max-width: 800px; margin: 0 auto; }
+    input, button { padding: 8px; margin: 5px; }
+    button { background: #4CAF50; color: white; border: none; cursor: pointer; }
+    #menuList { margin-top: 20px; border: 1px solid #ddd; padding: 15px; }
+    .category { margin-top: 15px; }
+  </style>
+</head>
+<body>
+  <h1>စားသောက်ဆိုင် မနူးစာရင်း</h1>
+  
+  <div>
+    <h2>အသစ်ထည့်ရန်</h2>
+    <input id="category" placeholder="အမျိုးအစား (ဥပမာ - အစာစု)" required />
+    <input id="itemName" placeholder="အစားအစာအမည်" required />
+    <input id="itemPrice" placeholder="စျေးနှုန်း" type="number" required />
+    <button onclick="addMenuItem()">ထည့်သွင်းမည်</button>
+  </div>
+
+  <div id="menuList">
+    <p>မနူးစာရင်းဒေတာများ လာရောက်ပါမည်...</p>
+  </div>
+
+  <script>
+    // GitHub URL - သင့် username နဲ့အစားထိုးပါ
+    const GITHUB_URL = "https://YOUR_GITHUB_USERNAME.github.io/restaurant-menu-data/db.json";
+    
+    // Local Storage ကိုပါတွဲသုံးထားပါသည်
+    let localMenu = JSON.parse(localStorage.getItem('restaurantMenu')) || {};
+
+    // Menu item ထည့်သွင်းခြင်း
+    async function addMenuItem() {
+      const category = document.getElementById('category').value;
+      const name = document.getElementById('itemName').value;
+      const price = document.getElementById('itemPrice').value;
+      
+      if (!category || !name || !price) {
+        alert("ကျေးဇူးပြု၍ အချက်အလက်အားလုံးဖြည့်ပါ!");
+        return;
+      }
+
+      // Local Storage တွင်သိမ်းဆည်းခြင်း
+      if (!localMenu[category]) localMenu[category] = [];
+      localMenu[category].push({ name, price });
+      localStorage.setItem('restaurantMenu', JSON.stringify(localMenu));
+      
+      alert('Local storage တွင် သိမ်းဆည်းပြီးပါပြီ!');
+      loadMenu();
+    }
+
+    // Menu ဖတ်ယူခြင်း
+    async function loadMenu() {
+      try {
+        // GitHub မှ data ဖတ်ယူခြင်း
+        const response = await fetch(GITHUB_URL);
+        const remoteData = await response.json();
+        
+        // Menu ပြသခြင်း
+        displayMenu(remoteData.menu, localMenu);
+      } catch (error) {
+        console.error("Error loading menu:", error);
+        // GitHub မှ data မရရင် Local Storage မှာရှိတာကိုပြပါ
+        displayMenu({}, localMenu);
+      }
+    }
+
+    // Menu ပြသခြင်း
+    function displayMenu(remoteMenu, localMenu) {
+      const menuListDiv = document.getElementById('menuList');
+      let html = '<h2>လက်ရှိမနူးစာရင်း</h2>';
+      
+      // GitHub Data
+      html += '<h3>အခြေခံမနူးစာရင်း</h3>';
+      for (const category in remoteMenu) {
+        html += `<div class="category"><strong>${category}</strong><ul>`;
+        remoteMenu[category].forEach(item => {
+          html += `<li>${item.name} - ${item.price} MMK</li>`;
+        });
+        html += '</ul></div>';
+      }
+      
+      // Local Storage Data
+      html += '<h3>သင့်ထည့်သွင်းထားသောအရာများ</h3>';
+      for (const category in localMenu) {
+        html += `<div class="category"><strong>${category}</strong><ul>`;
+        localMenu[category].forEach(item => {
+          html += `<li>${item.name} - ${item.price} MMK</li>`;
+        });
+        html += '</ul></div>';
+      }
+      
+      menuListDiv.innerHTML = html || '<p>မနူးစာရင်းတွင် မည်သည့်အရာမျှမရှိသေးပါ</p>';
+    }
+
+    // Page load
+    window.onload = loadMenu;
+  </script>
+</body>
+</html>
