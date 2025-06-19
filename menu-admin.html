@@ -11,7 +11,7 @@
   </style>
 </head>
 <body>
-  <h1>စားသောက်ဆိုင် မနူးစာရင်း</h1>
+  <h1>စားသောက်ဆိုင် မီနူးစာရင်း</h1>
   
   <div>
     <h2>အသစ်ထည့်ရန်</h2>
@@ -22,7 +22,7 @@
   </div>
 
   <div id="menuList">
-    <p>မနူးစာရင်းဒေတာများ လာရောက်ပါမည်...</p>
+    <p>မီနူးစာရင်းဒေတာများ လာရောက်ပါမည်...</p>
   </div>
 
   <script>
@@ -71,10 +71,10 @@
     // Menu ပြသခြင်း
     function displayMenu(remoteMenu, localMenu) {
       const menuListDiv = document.getElementById('menuList');
-      let html = '<h2>လက်ရှိမနူးစာရင်း</h2>';
+      let html = '<h2>လက်ရှိီမနူးစာရင်း</h2>';
       
       // GitHub Data
-      html += '<h3>အခြေခံမနူးစာရင်း</h3>';
+      html += '<h3>အခြေခံမီနူးစာရင်း</h3>';
       for (const category in remoteMenu) {
         html += `<div class="category"><strong>${category}</strong><ul>`;
         remoteMenu[category].forEach(item => {
@@ -93,7 +93,7 @@
         html += '</ul></div>';
       }
       
-      menuListDiv.innerHTML = html || '<p>မနူးစာရင်းတွင် မည်သည့်အရာမျှမရှိသေးပါ</p>';
+      menuListDiv.innerHTML = html || '<p>မီနူးစာရင်းတွင် မည်သည့်အရာမျှမရှိသေးပါ</p>';
     }
 
     // Page load
